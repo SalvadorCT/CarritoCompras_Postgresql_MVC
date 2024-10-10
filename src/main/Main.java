@@ -47,7 +47,7 @@ public class Main {
             String password = InputReader.read("Ingrese password: ",
                     new StringValidator().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$"));
 
-            UsuarioController.addUsuario(nombre, email, password);
+            usuarioController.addUsuario(nombre, email, password);
         });
 
         menuPrincipal.addCommandItem("2", "Login", () -> {
@@ -56,7 +56,7 @@ public class Main {
                     new StringValidator().email());
             String password = InputReader.read("Ingrese password: ",
                     new StringValidator());
-            int id = UsuarioController.login(email, password);
+            int id = usuarioController.login(email, password);
             if (id != -1) {
                 usuarioId[0] = id;
                 menuLogin.display();
@@ -81,16 +81,16 @@ public class Main {
 
         menuLogin.addCommandItem("4", "Eliminar producto del carrito", () -> {
             int idProducto = InputReader.read("Ingrese el ID del producto: ", new IntegerValidator());
-            carritoController.removeProductoFromCarrito(idProducto);
+            carritoController.removeProductoFromCarrito(usuarioId[0], idProducto);
         });
 
         menuLogin.addCommandItem("5", "Realizar compra", () -> {
-            Compra compra = new Compra();
+            Compra compra = new Compra(usuarioId[0]);
             compraController.addCompra(compra, usuarioId[0]);
         });
 
-        menuLogin.addCommandItem("6", "Ver historial de compras",()->{
-                compraController.DisplayHistorialCompras(usuarioId[0]);
+        menuLogin.addCommandItem("6", "Ver historial de compras", () -> {
+            compraController.displayHistorialCompras(usuarioId[0]);
         });
 
         menuLogin.addCommandItem("7", "Agregar reseña", () -> {
